@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
-import { User } from '../models/User';
+import { User } from '../models/index.js';
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
       const users = await User.find();
-      res.json(users);
+      console.log(users);
+     return res.json(users);
     } catch (err) {
       res.status(500).json(err);
     }
-  };
+    return console.log('Get all users');
+  }
 
   export const getUserById = async (req: Request, res: Response) => {
     try {
-      const user = await User.findById({req.params.userId });
+      const user = await User.findById({id: req.params.userId });
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
       }
@@ -23,7 +25,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
       res.status(500).json(err);
       return;
     }
-  };
+  }
 
   export const createUser = async (req: Request, res: Response) => {
     try {
@@ -32,7 +34,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     } catch (err) {
       res.status(500).json(err);
     }
-  };
+  }
 
   export const deleteUser = async (req: Request, res: Response) => {
     try {
@@ -41,15 +43,13 @@ export const getAllUsers = async (_req: Request, res: Response) => {
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
       }
-
-      await Application.deleteMany({ _id: { $in: user.applications } });
       res.json({ message: 'User deleted!' })
       return;
     } catch (err) {
       res.status(500).json(err);
       return;
     }
-  };
+  }
 
   export const updateUser = async (req: Request, res: Response) => {
     try {
@@ -69,7 +69,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
         message: error.message
       });
     }
-  };
+  }
 
   export const addFriend = async (req: Request, res: Response) => {
     try {
@@ -89,7 +89,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
         message: error.message
       });
     }
-  };
+  }
 
   export const removeFriend = async (req: Request, res: Response) => {
     try {
